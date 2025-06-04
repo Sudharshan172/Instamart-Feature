@@ -27,10 +27,10 @@ SECRET_KEY = 'django-insecure-+$n9ca9ix=e*!dywvepf#@z(!zln0-c9fmc($nba%yo#jjc)mj
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    "instamart-backend.onrender.com",
+    "instamart-backend-a4b5.onrender.com",
+    "instamart-frontend-ph88.onrender.com",
     "localhost",
 ]
-
 
 
 # Application definition
