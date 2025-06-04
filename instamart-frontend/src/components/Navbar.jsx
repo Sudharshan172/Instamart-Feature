@@ -34,11 +34,22 @@ const Navbar = () => {
                     />
                 </div>
 
-                {/* Cart Button */}
-                <div>
+                {/* Buttons Section */}
+                <div className="flex items-center space-x-4">
+                    {/* Cart Button */}
                     <button className="flex items-center space-x-2 bg-orange-500 text-white px-4 py-2 rounded-lg hover:bg-orange-600 transition duration-200 cursor-pointer">
                         <Link to="/cart">🛒 Cart</Link>
                     </button>
+
+                    {/* Admin Page Button */}
+                    <a 
+                        href="https://instamart-backend-a4b5.onrender.com/admin/login/?next=/admin/"  
+                        target="_blank"
+                        rel="noopener noreferrer"  
+                        className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition duration-200"
+                    >
+                        Admin Page
+                    </a>
                 </div>
             </div>
         </header>
