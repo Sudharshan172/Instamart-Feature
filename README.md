@@ -4,7 +4,7 @@ Instamart is a **Full-stack Web application** built using **React.js, Tailwind C
 
 ### 🔗 Live Demo  
 👉 [Instamart](https://instamart-frontend-ph88.onrender.com)
-- Admin Login Credentials: username: sudharshan, password: test@123
+- Admin Login Credentials: **username: sudharshan**, **password: test@123**
 
 ## 📌 Features
 **Frontend (React, Tailwind CSS)**
