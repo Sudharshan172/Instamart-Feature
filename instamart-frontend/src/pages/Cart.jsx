@@ -14,7 +14,7 @@ const Cart = ({ cartItems, removeFromCart, clearCart }) => {
             totalPrice: discountedPrice,
         };
 
-        const response = await fetch("http://127.0.0.1:8000/orders/checkout/", {
+        const response = await fetch("https://instamart-backend-a4b5.onrender.com/orders/checkout/", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(orderData),
