@@ -5,12 +5,14 @@ const Cart = ({ cartItems, removeFromCart, clearCart }) => {
     const navigate = useNavigate();
     const [applyFreeCash, setApplyFreeCash] = useState(false);
     const [showModal, setShowModal] = useState(false);
+    const [orderSummary, setOrderSummary] = useState(null); // Store order details before clearing cart
+
     const totalPrice = cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
-    const discountedPrice = applyFreeCash ? totalPrice - 100 : totalPrice;
+    const discountedPrice = applyFreeCash && totalPrice > 250 ? totalPrice - 100 : totalPrice;
 
     const handleCheckout = async () => {
         const orderData = {
-            cartItems,
+            cartItems: cartItems,
             totalPrice: discountedPrice,
         };
 
@@ -22,8 +24,9 @@ const Cart = ({ cartItems, removeFromCart, clearCart }) => {
 
         const result = await response.json();
         if (response.ok) {
+            setOrderSummary(orderData); // Store order details
             setShowModal(true);
-            clearCart();  // Show the modal on success
+            clearCart(); // Clear cart after storing summary
         } else {
             alert("Checkout failed! Please try again.");
         }
@@ -54,7 +57,14 @@ const Cart = ({ cartItems, removeFromCart, clearCart }) => {
                 </div>
             )}
 
-            {cartItems.length > 0 && (
+            {/* Display Message if Total < 250 */}
+            {cartItems.length > 0 && totalPrice < 250 && (
+                <p className="text-lg text-red-500 font-medium mt-4 text-center">
+                    Add items worth ₹{250 - totalPrice} more to apply Free Cash ₹100!
+                </p>
+            )}
+
+            {cartItems.length > 0 && totalPrice > 250 && (
                 <div className="mt-6 text-center">
                     <label className="flex items-center justify-center space-x-2 text-gray-700">
                         <input 
@@ -65,7 +75,12 @@ const Cart = ({ cartItems, removeFromCart, clearCart }) => {
                         />
                         <span className="text-lg font-medium">Apply Free Cash ₹100</span>
                     </label>
+                </div>
+            )}
 
+            {/* Total Price Section */}
+            {cartItems.length > 0 && (
+                <div className="text-center">
                     <h2 className="text-xl font-bold mt-4">Total: ₹{discountedPrice}</h2>
                     <button 
                         onClick={handleCheckout} 
@@ -77,7 +92,7 @@ const Cart = ({ cartItems, removeFromCart, clearCart }) => {
             )}
 
             {/* Modal Component */}
-            {showModal && (
+            {showModal && orderSummary && (
                 <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
                     <div className="bg-white rounded-lg shadow-lg p-6 w-96 text-center">
                         <h2 className="text-xl font-bold text-green-500">Order Placed Successfully!</h2>
@@ -87,14 +102,14 @@ const Cart = ({ cartItems, removeFromCart, clearCart }) => {
                         <div className="mt-4">
                             <h3 className="text-lg font-semibold">Order Summary</h3>
                             <div className="mt-2 text-gray-700">
-                                {cartItems.map(item => (
+                                {orderSummary.cartItems.map(item => (
                                     <div key={item.id} className="flex justify-between py-2">
                                         <span>{item.name}</span>
                                         <span>{item.quantity}x ₹{item.price}</span>
                                     </div>
                                 ))}
                             </div>
-                            <h3 className="mt-4 text-xl font-bold">Total Amount: ₹{discountedPrice}</h3>
+                            <h3 className="mt-4 text-xl font-bold">Total Amount: ₹{orderSummary.totalPrice}</h3>
                         </div>
 
                         <button 
@@ -106,7 +121,6 @@ const Cart = ({ cartItems, removeFromCart, clearCart }) => {
                     </div>
                 </div>
             )}
-
         </div>
     );
 };
