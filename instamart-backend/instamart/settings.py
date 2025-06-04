@@ -26,7 +26,11 @@ SECRET_KEY = 'django-insecure-+$n9ca9ix=e*!dywvepf#@z(!zln0-c9fmc($nba%yo#jjc)mj
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = [
+    "instamart-backend.onrender.com",
+    "localhost",
+]
+
 
 
 # Application definition
@@ -129,5 +133,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5173",  # Replace with your frontend URL
+    "http://localhost:5173",
+    "https://instamart-frontend-ph88.onrender.com",
 ]
+
