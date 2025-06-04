@@ -3,7 +3,8 @@
 Instamart is a **Full-stack Web application** built using **React.js, Tailwind CSS**, and **Django** as the backend. It allows users to browse products, add items to the cart, apply discounts, and securely checkout.
 
 ### 🔗 Live Demo  
-👉 [Instamart Frontend](https://instamart-frontend-ph88.onrender.com)
+👉 [Instamart](https://instamart-frontend-ph88.onrender.com)
+- Admin Login Credentials: username: sudharshan, password: test@123
 
 ## 📌 Features
 **Frontend (React, Tailwind CSS)**
