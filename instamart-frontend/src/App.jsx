@@ -35,8 +35,8 @@ const App = () => {
     const updateCartQuantity = (id, amount) => {
         setCartItems((prevCart) => {
             return prevCart.map((item) => 
-                item.id === id ? { ...item, quantity: Math.max(1, item.quantity + amount) } : item
-            );
+                item.id === id ? { ...item, quantity: item.quantity + amount} : item
+            ).filter(item=> item.quantity > 0);
         });
     };
 
@@ -45,13 +45,19 @@ const App = () => {
         setCartItems((prevCart) => prevCart.filter(item => item.id !== id));
     };
 
+    // **Clear cart after checkout**
+    const clearCart = () => {
+        setCartItems([]);  // Reset cart items
+        localStorage.removeItem("cart");  // Remove from localStorage
+    };
+
     return (
         <Router>
             <Navbar />
             <main className="flex-grow">
                 <Routes>
                     <Route path="/" element={<Home addToCart={addToCart} updateCartQuantity={updateCartQuantity} cartItems={cartItems} />} />
-                    <Route path="/cart" element={<Cart cartItems={cartItems} removeFromCart={removeFromCart} updateCartQuantity={updateCartQuantity} />} />
+                    <Route path="/cart" element={<Cart cartItems={cartItems} removeFromCart={removeFromCart} updateCartQuantity={updateCartQuantity} clearCart={clearCart} />} />
                 </Routes>
             </main>
             <Footer />

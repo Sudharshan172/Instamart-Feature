@@ -1,15 +1,16 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const Cart = ({ cartItems, removeFromCart }) => {
+const Cart = ({ cartItems, removeFromCart, clearCart }) => {
     const navigate = useNavigate();
     const [applyFreeCash, setApplyFreeCash] = useState(false);
+    const [showModal, setShowModal] = useState(false);
     const totalPrice = cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
-    const discountedPrice = applyFreeCash ? totalPrice - 100 : totalPrice; // Deduct ₹100 if checked
+    const discountedPrice = applyFreeCash ? totalPrice - 100 : totalPrice;
 
     const handleCheckout = async () => {
         const orderData = {
-            cartItems: cartItems,
+            cartItems,
             totalPrice: discountedPrice,
         };
 
@@ -21,8 +22,8 @@ const Cart = ({ cartItems, removeFromCart }) => {
 
         const result = await response.json();
         if (response.ok) {
-            alert("Order Placed Successfully!");
-            navigate("/"); // Redirect to home page
+            setShowModal(true);
+            clearCart();  // Show the modal on success
         } else {
             alert("Checkout failed! Please try again.");
         }
@@ -42,7 +43,6 @@ const Cart = ({ cartItems, removeFromCart }) => {
                             <h2 className="text-lg font-semibold text-gray-800 mt-2">{item.name}</h2>
                             <p className="text-sm text-gray-600">₹{item.price * item.quantity}</p>
 
-                            {/* Remove Button */}
                             <button 
                                 onClick={() => removeFromCart(item.id)} 
                                 className="mt-2 bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition duration-200"
@@ -54,7 +54,6 @@ const Cart = ({ cartItems, removeFromCart }) => {
                 </div>
             )}
 
-            {/* Apply Free Cash Checkbox */}
             {cartItems.length > 0 && (
                 <div className="mt-6 text-center">
                     <label className="flex items-center justify-center space-x-2 text-gray-700">
@@ -67,7 +66,6 @@ const Cart = ({ cartItems, removeFromCart }) => {
                         <span className="text-lg font-medium">Apply Free Cash ₹100</span>
                     </label>
 
-                    {/* Total Price Section */}
                     <h2 className="text-xl font-bold mt-4">Total: ₹{discountedPrice}</h2>
                     <button 
                         onClick={handleCheckout} 
@@ -77,6 +75,38 @@ const Cart = ({ cartItems, removeFromCart }) => {
                     </button>
                 </div>
             )}
+
+            {/* Modal Component */}
+            {showModal && (
+                <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+                    <div className="bg-white rounded-lg shadow-lg p-6 w-96 text-center">
+                        <h2 className="text-xl font-bold text-green-500">Order Placed Successfully!</h2>
+                        <p className="mt-2 text-gray-600">Thank you for shopping with us.</p>
+
+                        {/* Display Order Summary */}
+                        <div className="mt-4">
+                            <h3 className="text-lg font-semibold">Order Summary</h3>
+                            <div className="mt-2 text-gray-700">
+                                {cartItems.map(item => (
+                                    <div key={item.id} className="flex justify-between py-2">
+                                        <span>{item.name}</span>
+                                        <span>{item.quantity}x ₹{item.price}</span>
+                                    </div>
+                                ))}
+                            </div>
+                            <h3 className="mt-4 text-xl font-bold">Total Amount: ₹{discountedPrice}</h3>
+                        </div>
+
+                        <button 
+                            onClick={() => { setShowModal(false); navigate("/"); }} 
+                            className="mt-4 bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600"
+                        >
+                            Go to Home
+                        </button>
+                    </div>
+                </div>
+            )}
+
         </div>
     );
 };
